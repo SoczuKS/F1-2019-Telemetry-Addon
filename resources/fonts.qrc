@@ -1,0 +1,7 @@
+<RCC>
+    <qresource prefix="/fonts">
+        <file alias="f1bold">Formula1-Bold.otf</file>
+        <file alias="f1regular">Formula1-Regular.otf</file>
+        <file alias="f1wide">Formula1-Wide.otf</file>
+    </qresource>
+</RCC>

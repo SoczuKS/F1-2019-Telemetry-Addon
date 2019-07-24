@@ -21,6 +21,9 @@ void Config::load() {
 		} else if (propName == "Port") {
 			this->port = static_cast<uint16>(std::stoi(propValue));
 			propertiesRead++;
+		} else if (propName == "ServerAddress") {
+			this->serverAddress = propValue;
+			propertiesRead++;
 		}
 	}
 
@@ -30,8 +33,10 @@ void Config::load() {
 }
 
 void Config::reset() {
-	this->format = FORMAT_2019;
+	this->format = Format::FORMAT_2019;
 	this->port = 20777;
+	this->serverAddress = "192.168.0.169";
+	this->carStatusWidgetPosition = QVector2D(1600.0f, 450.0f);
 
 	this->save();
 }
@@ -39,8 +44,9 @@ void Config::reset() {
 void Config::save() {
 	std::ofstream file(configFileName, std::ios::out | std::ios::trunc);
 
-	file << "Format " << this->format << '\n';
+	file << "Format " << static_cast<int>(this->format) << '\n';
 	file << "Port " << this->port << '\n';
+	file << "ServerAddress " << this->serverAddress << '\n';
 
 	file.close();
 }
