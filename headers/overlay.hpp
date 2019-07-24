@@ -50,9 +50,25 @@ private:
 	QLabel* topSpeed;
 	QLabel* weather;
 	QLabel* drs;
+	QLabel* frontLeftWingDamage;
+	QLabel* frontRightWingDamage;
+	QLabel* rearWingDamage;
+	QLabel* engineDamage;
+	QLabel* gearboxDamage;
+	QLabel* frontRightWear;
+	QLabel* frontRightDamage;
+	QLabel* frontLeftWear;
+	QLabel* frontLeftDamage;
+	QLabel* rearRightWear;
+	QLabel* rearRightDamage;
+	QLabel* rearLeftWear;
+	QLabel* rearLeftDamage;
 
 	QProgressBar* throttle;
 	QProgressBar* brake;
+
+	std::array<Participant, 20> participants;
+	Participant* me;
 
 	uint8 playerCarIndex;
 	uint16 topSpeedI = 0;

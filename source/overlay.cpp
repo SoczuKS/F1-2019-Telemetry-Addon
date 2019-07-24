@@ -70,31 +70,72 @@ void Overlay::setupUi() {
 	Config& cfg = Config::instance();
 
 	ui->carStatusWidget->move(cfg.getCarStatusWidgetPosition().x(), cfg.getCarStatusWidgetPosition().y());
+	ui->sessionStatusWidget->move(cfg.getSessionWidgetPosition().x(), cfg.getSessionWidgetPosition().y());
+	ui->timeStatusWidget->move(cfg.getTimeStatusWidgetPosition().x(), cfg.getTimeStatusWidgetPosition().y());
+	ui->carConditionWidget->move(cfg.getCarConditionWidgetPosition().x(), cfg.getCarConditionWidgetPosition().y());
 
-	// pedals
+#pragma region carStatus
+#pragma region pedals
 	throttle = ui->throttle;
 	brake = ui->brake;
+#pragma endregion
 
-	// weather
+#pragma region weather
 	trackTemp = ui->track;
 	airTemp = ui->air;
 	weather = ui->weather;
+#pragma endregion
 
-	// maintenance
-		// ers
+#pragma region maintenance
+#pragma region ers
 	ersCharge = ui->charge;
 	ersMode = ui->ersMode;
-		// fuel
+#pragma endregion
+#pragma region fuel
 	fuelMode = ui->fuelMode;
 	fuelLaps = ui->fuelLaps;
-		// drs
+#pragma endregion
+#pragma region drs
 	drs = ui->drs;
+#pragma endregion
+#pragma endregion
 
-	// engine
+#pragma region engine
 	gear = ui->gear;
 	rpm = ui->rpm;
 	speed = ui->speed;
 	topSpeed = ui->topSpeed;
+#pragma endregion
+#pragma endregion
+
+#pragma region carCondition
+
+#pragma region tyres
+#pragma region front
+	frontLeftDamage = ui->frontLeftDamage;
+	frontRightDamage = ui->frontRightDamage;
+	frontLeftWear = ui->frontLeftWear;
+	frontRightWear = ui->frontRightWear;
+#pragma endregion
+#pragma region rear
+	rearLeftDamage = ui->rearLeftDamage;
+	rearRightDamage = ui->rearRightDamage;
+	rearLeftWear = ui->rearLeftWear;
+	rearRightWear = ui->rearRightWear;
+#pragma endregion
+#pragma endregion
+
+#pragma region wing
+	frontLeftWingDamage = ui->frontLeftWingDamage;
+	frontRightWingDamage = ui->frontRightWingDamage;
+	rearWingDamage = ui->rearWingDamage;
+#pragma endregion
+
+#pragma region
+	engineDamage = ui->engineDamage;
+	gearboxDamage = ui->gearboxDamage;
+#pragma endregion
+#pragma endregion
 }
 
 Overlay::~Overlay() {
@@ -143,17 +184,38 @@ void Overlay::updateCarStatusOverlay(CarStatusPacket packet) {
 #pragma region MyCarOnly
 	auto carStatus = packet.carStatus[playerCarIndex];
 
-	this->fuelMode->setText((std::to_string(static_cast<int>(carStatus.fuelMix))).c_str());
+	fuelMode->setText((std::to_string(static_cast<int>(carStatus.fuelMix))).c_str());
 
 	str << std::fixed << std::setprecision(1) << carStatus.fuelRemainingLaps;
-	this->fuelLaps->setText(str.str().c_str());
-	str.clear();
+	fuelLaps->setText(str.str().c_str());
+	str.flush();
 
-	this->ersMode->setText((std::to_string(static_cast<int>(carStatus.ersDeployMode))).c_str());
+	ersMode->setText((std::to_string(static_cast<int>(carStatus.ersDeployMode))).c_str());
 
 	float ersPercentage = (static_cast<float>(carStatus.ersStoreEnergy) / 4000000.0f) * 100.0f;
 	str << std::fixed << std::setprecision(1) << ersPercentage;
-	this->ersCharge->setText(str.str().c_str());
+	ersCharge->setText(str.str().c_str());
+	str.flush();
+
+	frontLeftWingDamage->setText((std::to_string(carStatus.frontLeftWingDamage)).c_str());
+	frontRightWingDamage->setText((std::to_string(carStatus.frontRightWingDamage)).c_str());
+
+	rearWingDamage->setText((std::to_string(carStatus.rearWingDamage)).c_str());
+
+	engineDamage->setText((std::to_string(carStatus.engineDamage)).c_str());
+	gearboxDamage->setText((std::to_string(carStatus.gearboxDamage)).c_str());
+
+	frontRightWear->setText((std::to_string(carStatus.tyresWear[static_cast<uint8>(Tyres::FRONT_RIGHT)])).c_str());
+	frontRightDamage->setText((std::to_string(carStatus.tyresDamage[static_cast<uint8>(Tyres::FRONT_RIGHT)])).c_str());
+
+	frontLeftWear->setText((std::to_string(carStatus.tyresWear[static_cast<uint8>(Tyres::FRONT_LEFT)])).c_str());
+	frontLeftDamage->setText((std::to_string(carStatus.tyresDamage[static_cast<uint8>(Tyres::FRONT_LEFT)])).c_str());
+
+	rearRightWear->setText((std::to_string(carStatus.tyresWear[static_cast<uint8>(Tyres::REAR_RIGHT)])).c_str());
+	rearRightDamage->setText((std::to_string(carStatus.tyresDamage[static_cast<uint8>(Tyres::REAR_RIGHT)])).c_str());
+
+	rearLeftWear->setText((std::to_string(carStatus.tyresWear[static_cast<uint8>(Tyres::REAR_LEFT)])).c_str());
+	rearLeftDamage->setText((std::to_string(carStatus.tyresDamage[static_cast<uint8>(Tyres::REAR_LEFT)])).c_str());
 #pragma endregion
 
 
@@ -218,7 +280,8 @@ void Overlay::updateMotionOverlay(MotionPacket packet) {
 
 void Overlay::updateParticipantsOverlay(ParticipantsPacket packet) {
 #pragma region MyCarOnly
-
+	participants = packet.participants;
+	me = &(participants[playerCarIndex]);
 #pragma endregion
 
 

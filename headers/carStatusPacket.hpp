@@ -21,6 +21,8 @@ enum class ERSMode : uint8 { NONE, LOW, MEDIUM, HIGH, OVERTAKE, HOTLAP };
 
 enum class VehicleFIAFlags : int8 { UNKNOWN_INVALID = -1, NONE, GREEN, BLUE, YELLOW, RED };
 
+enum class Tyres : uint8 { REAR_LEFT, REAR_RIGHT, FRONT_LEFT, FRONT_RIGHT };
+
 constexpr uint16 CarStatusPacketSize = 1143;
 
 #pragma pack(push, 1)
@@ -42,7 +44,7 @@ struct CarStatus {
 
 	std::array<uint8, 4> tyresWear;     // percentage
 	std::array<uint8, 4> tyresDamage;	// percentage
-	uint8 frontLeftWingDamage, frontRightWingDamage, rearWingDamage, engineDamage, gearBoxDamage;	// percentage
+	uint8 frontLeftWingDamage, frontRightWingDamage, rearWingDamage, engineDamage, gearboxDamage;	// percentage
 
 	VehicleFIAFlags vehicleFiaFlags;
 	float ersStoreEnergy;				// ERS energy store in Joules

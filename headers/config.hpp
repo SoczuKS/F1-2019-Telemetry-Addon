@@ -10,7 +10,7 @@
 
 #include <QVector2D>
 
-constexpr uint8 propertiesNum = 6;
+constexpr uint8 propertiesNum = 7;
 
 enum class Format { FORMAT_2019, FORMAT_2018, FORMAT_OLD };	// Currently using only the latest format
 
@@ -51,6 +51,9 @@ public:
 	QVector2D getCarStatusWidgetPosition() const { return carStatusWidgetPosition; }
 	void setCarStatusWidgetPosition(const QVector2D& pos) { carStatusWidgetPosition = pos; }
 
+	QVector2D getCarConditionWidgetPosition() const { return carConditionWidgetPosition; }
+	void setCarConditionWidgetPosition(const QVector2D& pos) { carConditionWidgetPosition = pos; }
+
 	QVector2D getTimeStatusWidgetPosition() const { return timeStatusWidgetPosition; }
 	void setTimeStatusWidgetPosition(const QVector2D& pos) { timeStatusWidgetPosition = pos; }
 
@@ -70,6 +73,7 @@ private:
 	QVector2D carStatusWidgetPosition;
 	QVector2D timeStatusWidgetPosition;
 	QVector2D sessionStatusWidgetPosition;
+	QVector2D carConditionWidgetPosition;
 
 	const std::string configFileName = "config.cfg";
 

@@ -121,6 +121,10 @@ void Server::analyzePacket(Packet packet) {
 
 void Server::analyzeHeader(PacketHeader& header) {
 	if (sessionUid != header.sessionUID) {
+		sessionUid = header.sessionUID;
+
+		participantsNeedUpdate = true;
+
 		emit this->headerUpdate(header);
 	}
 }
@@ -150,7 +154,10 @@ void Server::analyzeMotion(MotionPacket& packet) {
 }
 
 void Server::analyzeParticipants(ParticipantsPacket& packet) {
-	emit this->participantsUpdate(packet);
+	if (participantsNeedUpdate) {
+		emit this->participantsUpdate(packet);
+		participantsNeedUpdate = false;
+	}
 }
 
 void Server::analyzeSession(SessionPacket& packet) {

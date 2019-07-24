@@ -39,6 +39,8 @@ private:
 
 	uint64 sessionUid = 0;
 
+	bool participantsNeedUpdate;
+
 	void analyzePacket(Packet);
 
 	void analyzeHeader(PacketHeader&);
